@@ -7,6 +7,7 @@ using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Data;
 using System.IO.Ports;
+using System.Windows.Forms;
 
 namespace PContatos0030482413011
 {
@@ -24,20 +25,20 @@ namespace PContatos0030482413011
         {
             SqlDataAdapter dAContact = new SqlDataAdapter();
 
-            DataTable dBContact = new DataTable();
+            DataTable dTContact = new DataTable();
 
             try
             {
-                dAContact = new SqlDataAdapter("SELECT * FROM CONTATO ORDER BY NOME_CONTATO", frmMain.Connection);
-                dAContact.Fill(dBContact); // Dados
-                dAContact.FillSchema(dBContact, SchemaType.Source); // Inf. estrutura tabela.
+                dAContact = new SqlDataAdapter("SELECT * FROM CONTATO ORDER BY NOME_CONTATO", frmMain.Connection); // SQL command to get the data in the db, ordered by contact name.
+                dAContact.Fill(dTContact); // Data.
+                dAContact.FillSchema(dTContact, SchemaType.Source); // Table structure.
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw; // criar uma exceção.
+                MessageBox.Show($"Erro ao carregar a tabela de contatos: {ex.Message}");
             }
 
-            return dBContact;
+            return dTContact;
         }
 
         public int Insert()
@@ -48,14 +49,17 @@ namespace PContatos0030482413011
             {
                 SqlCommand mycommand;
 
+                // This command inserts a new contact to the db. The '@' variables (SQL parameters) recieve the user info.
                 mycommand = new SqlCommand("INSERT INTO CONTATO VALUES (@nomecontato, @endcontato, @cidadeidcidade, @celcontato, @emailcontato, @dtcadastrocontato)", frmMain.Connection);
 
-                mycommand.Parameters.Add(new SqlParameter("@nomecontato", SqlDbType.VarChar));
-                mycommand.Parameters.Add(new SqlParameter("@endcontato", SqlDbType.VarChar));
-                mycommand.Parameters.Add(new SqlParameter("@cidadeidcidade", SqlDbType.Int));
-                mycommand.Parameters.Add(new SqlParameter("@celcontato", SqlDbType.VarChar));
-                mycommand.Parameters.Add(new SqlParameter("@emailcontato", SqlDbType.VarChar));
-                mycommand.Parameters.Add(new SqlParameter("@dtcadastrocontato", SqlDbType.Date));
+                // The ID is automaticaly set in the db (IDENTITY).
+                // Adding parameters to the command.
+                mycommand.Parameters.Add(new SqlParameter("@nomecontato", SqlDbType.VarChar)); // String.
+                mycommand.Parameters.Add(new SqlParameter("@endcontato", SqlDbType.VarChar)); // String.
+                mycommand.Parameters.Add(new SqlParameter("@cidadeidcidade", SqlDbType.Int)); // Int.
+                mycommand.Parameters.Add(new SqlParameter("@celcontato", SqlDbType.VarChar)); // String.
+                mycommand.Parameters.Add(new SqlParameter("@emailcontato", SqlDbType.VarChar)); // String.
+                mycommand.Parameters.Add(new SqlParameter("@dtcadastrocontato", SqlDbType.Date)); // Date type.
 
 
                 mycommand.Parameters["@nomecontato"].Value = ContactName;
@@ -65,16 +69,14 @@ namespace PContatos0030482413011
                 mycommand.Parameters["@emailcontato"].Value = ContactEmail;
                 mycommand.Parameters["@dtcadastrocontato"].Value = ContactRegisterDate;
 
-                insReturn = mycommand.ExecuteNonQuery();
-
-
+                insReturn = mycommand.ExecuteNonQuery(); // Returns the number of rows affected.
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                MessageBox.Show($"Erro no método Contact.Insert(): {ex.Message}");
             }
 
-            return insReturn;
+            return insReturn; // If return 0 (no rows affected), won't save anything at the frmContact.
         }
 
         public int Update() // Alteração.

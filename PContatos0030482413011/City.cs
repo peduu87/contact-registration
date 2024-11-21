@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Sql;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace PContatos0030482413011
 {
@@ -19,17 +20,17 @@ namespace PContatos0030482413011
         {
             SqlDataAdapter dACity = new SqlDataAdapter();
 
-            DataTable dTCity = new DataTable();
+            DataTable dTCity = new DataTable(); // Table with the cities data.
 
             try
             {
-                dACity = new SqlDataAdapter("SELECT * FROM CIDADE ORDER BY NOME_CIDADE", frmMain.Connection);
-                dACity.Fill(dTCity); // Dados
-                dACity.FillSchema(dTCity, SchemaType.Source); // Inf. estrutura tabela.
+                dACity = new SqlDataAdapter("SELECT * FROM CIDADE ORDER BY NOME_CIDADE", frmMain.Connection); // SQL command to get the data in the db, ordered by city name.
+                dACity.Fill(dTCity); // Data.
+                dACity.FillSchema(dTCity, SchemaType.Source); // Table structure.
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw; // criar uma exceção.
+                MessageBox.Show($"Erro ao carregar a tabela de cidades: {ex.Message}");
             }
 
             return dTCity;

@@ -25,10 +25,10 @@ namespace PContatos0030482413011
         {
             try
             {
-                Connection = new SqlConnection("data source=SILVA-PC;initial catalog=LP2;trusted_connection=true"); // String de conexão da máquina.
+                Connection = new SqlConnection("data source=SILVA-PC;initial catalog=LP2;trusted_connection=true"); // Connection String.
                 Connection.Open();
             }
-            catch (Exception ex)
+            catch (Exception ex) // Connection error.
             {
                 MessageBox.Show($"Erro ao abrir banco de dados:\"{ex.Message}\".");
             }
