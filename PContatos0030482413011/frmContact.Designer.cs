@@ -260,6 +260,7 @@
             this.dgvContact.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvContact.Location = new System.Drawing.Point(7, 7);
             this.dgvContact.Name = "dgvContact";
+            this.dgvContact.ReadOnly = true;
             this.dgvContact.Size = new System.Drawing.Size(754, 358);
             this.dgvContact.TabIndex = 0;
             // 

@@ -92,7 +92,7 @@ namespace PContatos0030482413011
         {
             if (tbContact.SelectedIndex == 0)
             {
-                tbContact.SelectTab(1); // Pass the user to the "Detalhes" tab, to fill it with info.
+                tbContact.SelectTab(1); // Leads the user to the "Detalhes" tab, to fill it with info.
             }
 
             tbxName.Enabled = true;
@@ -126,7 +126,7 @@ namespace PContatos0030482413011
             {
                 MessageBox.Show("Cidade inválida.");
             }
-            else if (tbxPhone.Text == String.Empty)
+            else if (tbxPhone.Text == String.Empty || tbxPhone.Text.Any(x => char.IsLetter(x)))
             {
                 MessageBox.Show("Celular inválido.");
             }
